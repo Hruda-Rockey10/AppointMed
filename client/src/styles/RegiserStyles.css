@@ -1,0 +1,29 @@
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  height: 100vh;
+  margin-left: 180px;
+  padding-bottom: 200px;
+  
+  
+}
+
+.register-form {
+  border: 10px solid rgb(62, 183, 169);
+  border-radius: 20px;
+  padding: 30px;
+}
+body{
+  background-image: url("../../public/bg.jpg");
+  background-size: cover;
+
+}
+.heading{
+  justify-content: left;
+  color: white;
+  font-variant:small-caps;
+  padding-top: 30px;
+  padding-left: 30px;
+  
+}
