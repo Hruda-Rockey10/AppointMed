@@ -56,7 +56,7 @@ const loginController = async (req, res) => {
 
 const authController = async (req, res) => {
   try {
-    const user = await userModel.findById({ _id: req.body.userId });
+    const user = await userModel.findById({ _id: req.userId });
     user.password = undefined;
     if (!user) {
       return res.status(200).send({
@@ -82,23 +82,23 @@ const authController = async (req, res) => {
 // APpply DOctor CTRL
 const applyDoctorController = async (req, res) => {
   try {
-    const newDoctor = await doctorModel({ ...req.body, status: "pending" });
+    const newDoctor = await doctorModel({ ...req.body, status: "pending", userId: req.userId });
     await newDoctor.save();
     const adminUser = await userModel.findOne({ isAdmin: true });
-    const notifcation = adminUser.notifcation;
-    notifcation.push({
+    const notification = adminUser.notification;
+    notification.push({
       type: "apply-doctor-request",
       message: `${newDoctor.firstName} ${newDoctor.lastName} Has Applied For A Doctor Account`,
       data: {
         doctorId: newDoctor._id,
         name: newDoctor.firstName + " " + newDoctor.lastName,
-        onClickPath: "/admin/docotrs",
+        onClickPath: "/admin/doctors",
       },
     });
-    await userModel.findByIdAndUpdate(adminUser._id, { notifcation });
+    await userModel.findByIdAndUpdate(adminUser._id, { notification });
     res.status(201).send({
       success: true,
-      message: "Doctor Account Applied SUccessfully",
+      message: "Doctor Account Applied Successfully",
     });
   } catch (error) {
     console.log(error);
@@ -113,12 +113,12 @@ const applyDoctorController = async (req, res) => {
 //notification ctrl
 const getAllNotificationController = async (req, res) => {
   try {
-    const user = await userModel.findOne({ _id: req.body.userId });
-    const seennotification = user.seennotification;
-    const notifcation = user.notifcation;
-    seennotification.push(...notifcation);
-    user.notifcation = [];
-    user.seennotification = notifcation;
+    const user = await userModel.findOne({ _id: req.userId });
+    const seenNotification = user.seenNotification;
+    const notification = user.notification;
+    seenNotification.push(...notification);
+    user.notification = [];
+    user.seenNotification = seenNotification;
     const updatedUser = await user.save();
     res.status(200).send({
       success: true,
@@ -138,9 +138,9 @@ const getAllNotificationController = async (req, res) => {
 // delete notifications
 const deleteAllNotificationController = async (req, res) => {
   try {
-    const user = await userModel.findOne({ _id: req.body.userId });
-    user.notifcation = [];
-    user.seennotification = [];
+    const user = await userModel.findOne({ _id: req.userId });
+    user.notification = [];
+    user.seenNotification = [];
     const updatedUser = await user.save();
     updatedUser.password = undefined;
     res.status(200).send({
@@ -180,21 +180,21 @@ const getAllDocotrsController = async (req, res) => {
 //BOOK APPOINTMENT
 const bookeAppointmnetController = async (req, res) => {
   try {
-    req.body.date = moment(req.body.date, "DD-MM-YYYY").toISOString();
-    req.body.time = moment(req.body.time, "HH:mm").toISOString();
+    req.body.date = moment(req.body.date, "YYYY-MM-DD").format("DD-MM-YYYY");
+    req.body.time = moment(req.body.time, "HH:mm").format("HH:mm");
     req.body.status = "pending";
-    const newAppointment = new appointmentModel(req.body);
+    const newAppointment = new appointmentModel({ ...req.body, userId: req.userId });
     await newAppointment.save();
     const user = await userModel.findOne({ _id: req.body.doctorInfo.userId });
-    user.notifcation.push({
+    user.notification.push({
       type: "New-appointment-request",
-      message: `A nEw Appointment Request from ${req.body.userInfo.name}`,
-      onCLickPath: "/user/appointments",
+      message: `A New Appointment Request from ${req.body.userInfo.name}`,
+      onClickPath: "/user/appointments",
     });
     await user.save();
     res.status(200).send({
       success: true,
-      message: "Appointment Book succesfully",
+      message: "Appointment Book successfully",
     });
   } catch (error) {
     console.log(error);
@@ -209,11 +209,11 @@ const bookeAppointmnetController = async (req, res) => {
 // booking bookingAvailabilityController
 const bookingAvailabilityController = async (req, res) => {
   try {
-    const date = moment(req.body.date, "DD-MM-YY").toISOString();
+    const date = moment(req.body.date, "YYYY-MM-DD").format("DD-MM-YYYY");
     const fromTime = moment(req.body.time, "HH:mm")
       .subtract(1, "hours")
-      .toISOString();
-    const toTime = moment(req.body.time, "HH:mm").add(1, "hours").toISOString();
+      .format("HH:mm");
+    const toTime = moment(req.body.time, "HH:mm").add(1, "hours").format("HH:mm");
     const doctorId = req.body.doctorId;
     const appointments = await appointmentModel.find({
       doctorId,
@@ -247,11 +247,11 @@ const bookingAvailabilityController = async (req, res) => {
 const userAppointmentsController = async (req, res) => {
   try {
     const appointments = await appointmentModel.find({
-      userId: req.body.userId,
+      userId: req.userId,
     });
     res.status(200).send({
       success: true,
-      message: "Users Appointments Fetch SUccessfully",
+      message: "Users Appointments Fetch Successfully",
       data: appointments,
     });
   } catch (error) {

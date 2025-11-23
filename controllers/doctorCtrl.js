@@ -3,7 +3,7 @@ const doctorModel = require("../models/doctorModel");
 const userModel = require("../models/userModels");
 const getDoctorInfoController = async (req, res) => {
   try {
-    const doctor = await doctorModel.findOne({ userId: req.body.userId });
+    const doctor = await doctorModel.findOne({ userId: req.userId });
     res.status(200).send({
       success: true,
       message: "doctor data fetch success",
@@ -23,7 +23,7 @@ const getDoctorInfoController = async (req, res) => {
 const updateProfileController = async (req, res) => {
   try {
     const doctor = await doctorModel.findOneAndUpdate(
-      { userId: req.body.userId },
+      { userId: req.userId },
       req.body
     );
     res.status(201).send({
@@ -62,7 +62,7 @@ const getDoctorByIdController = async (req, res) => {
 
 const doctorAppointmentsController = async (req, res) => {
   try {
-    const doctor = await doctorModel.findOne({ userId: req.body.userId });
+    const doctor = await doctorModel.findOne({ userId: req.userId });
     const appointments = await appointmentModel.find({
       doctorId: doctor._id,
     });
@@ -89,11 +89,11 @@ const updateStatusController = async (req, res) => {
       { status }
     );
     const user = await userModel.findOne({ _id: appointments.userId });
-    const notifcation = user.notifcation;
-    notifcation.push({
+    const notification = user.notification;
+    notification.push({
       type: "status-updated",
       message: `your appointment has been updated ${status}`,
-      onCLickPath: "/doctor-appointments",
+      onClickPath: "/doctor-appointments",
     });
     await user.save();
     res.status(200).send({
