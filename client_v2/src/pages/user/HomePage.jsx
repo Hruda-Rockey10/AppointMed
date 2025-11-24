@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import DoctorList from "../../components/DoctorList";
 import api from "../../services/api";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../features/alertSlice";
+import Layout from "../../components/layout/Layout";
+import PageHeader from "../../components/ui/PageHeader";
 
 const HomePage = () => {
     const [doctors, setDoctors] = useState([]);
     const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
 
     const getUserData = async () => {
         try {
@@ -27,14 +31,24 @@ const HomePage = () => {
     }, []);
 
     return (
-        <div>
-            <h1 className="text-2xl font-bold mb-4 text-gray-800">Doctors</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {doctors && doctors.map((doctor) => (
-                    <DoctorList key={doctor._id} doctor={doctor} />
-                ))}
-            </div>
-        </div>
+        <Layout>
+            <PageHeader
+                title={`Welcome, ${user?.name || 'User'}!`}
+                subtitle="Find and book appointments with verified doctors"
+            />
+
+            {doctors.length === 0 ? (
+                <div className="text-center py-12">
+                    <p className="text-gray-500 text-lg">No doctors available at the moment</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {doctors.map((doctor) => (
+                        <DoctorList key={doctor._id} doctor={doctor} />
+                    ))}
+                </div>
+            )}
+        </Layout>
     );
 };
 

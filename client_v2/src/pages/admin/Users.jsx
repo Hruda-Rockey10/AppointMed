@@ -3,6 +3,10 @@ import Layout from "../../components/layout/Layout";
 import api from "../../services/api";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../features/alertSlice";
+import PageHeader from "../../components/ui/PageHeader";
+import Table from "../../components/ui/Table";
+import Badge from "../../components/ui/Badge";
+import Button from "../../components/ui/Button";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -28,33 +32,48 @@ const Users = () => {
 
     return (
         <Layout>
-            <h1 className="text-2xl font-bold mb-4 text-center">Users List</h1>
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
-                    <thead>
-                        <tr>
-                            <th className="px-4 py-2 border-b">Name</th>
-                            <th className="px-4 py-2 border-b">Email</th>
-                            <th className="px-4 py-2 border-b">Doctor</th>
-                            <th className="px-4 py-2 border-b">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <PageHeader title="Manage Users" subtitle="View and manage all registered users" />
+
+            {users.length === 0 ? (
+                <div className="text-center py-12">
+                    <p className="text-gray-500 text-lg">No users found</p>
+                </div>
+            ) : (
+                <Table hoverable>
+                    <Table.Head>
+                        <Table.Row>
+                            <Table.Header>Name</Table.Header>
+                            <Table.Header>Email</Table.Header>
+                            <Table.Header>Doctor Status</Table.Header>
+                            <Table.Header>Actions</Table.Header>
+                        </Table.Row>
+                    </Table.Head>
+                    <Table.Body>
                         {users.map((user) => (
-                            <tr key={user._id} className="text-center hover:bg-gray-50">
-                                <td className="px-4 py-2 border-b">{user.name}</td>
-                                <td className="px-4 py-2 border-b">{user.email}</td>
-                                <td className="px-4 py-2 border-b">{user.isDoctor ? "Yes" : "No"}</td>
-                                <td className="px-4 py-2 border-b">
-                                    <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                            <Table.Row key={user._id}>
+                                <Table.Cell>
+                                    <div className="font-medium text-gray-900">{user.name}</div>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <span className="text-gray-600">{user.email}</span>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    {user.isDoctor ? (
+                                        <Badge variant="info">Doctor</Badge>
+                                    ) : (
+                                        <Badge variant="neutral">User</Badge>
+                                    )}
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Button variant="danger" size="sm">
                                         Block
-                                    </button>
-                                </td>
-                            </tr>
+                                    </Button>
+                                </Table.Cell>
+                            </Table.Row>
                         ))}
-                    </tbody>
-                </table>
-            </div>
+                    </Table.Body>
+                </Table>
+            )}
         </Layout>
     );
 };

@@ -4,10 +4,10 @@ This project has been revamped with a modern tech stack.
 
 ## Structure
 
-- **client_v2**: The new frontend built with React, Vite, Tailwind CSS v4, and Redux Toolkit.
-- **client**: The legacy frontend (deprecated).
+- **client_v2**: The frontend built with React, Vite, Tailwind CSS v4, and Redux Toolkit.
 - **server.js**: The backend entry point.
-- **controllers**, **models**, **routes**: Backend logic.
+- **controllers**, **models**, **routes**: Backend logic for user, doctor, and admin operations.
+- **config**: Database configuration.
 
 ## Getting Started
 

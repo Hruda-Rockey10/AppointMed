@@ -1,19 +1,32 @@
-import React from "react";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
+import React, { useState } from 'react';
+import Navbar from './Navbar';
 
 const Layout = ({ children }) => {
-    return (
-        <div className="flex h-screen bg-gray-100 overflow-hidden">
-            <Sidebar />
-            <div className="flex-1 flex flex-col h-screen">
-                <Header />
-                <div className="flex-1 overflow-y-auto p-6">
-                    {children}
-                </div>
-            </div>
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar onMenuToggle={toggleMobileMenu} isMobileMenuOpen={isMobileMenuOpen} />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="animate-fadeIn">
+          {children}
         </div>
-    );
+      </main>
+
+      <footer className="bg-white border-t border-gray-200 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <p className="text-center text-gray-600 text-sm">
+            © {new Date().getFullYear()} AppointMed. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
 };
 
 export default Layout;

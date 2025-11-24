@@ -4,6 +4,10 @@ import api from "../../services/api";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../features/alertSlice";
 import moment from "moment";
+import PageHeader from "../../components/ui/PageHeader";
+import Table from "../../components/ui/Table";
+import Badge from "../../components/ui/Badge";
+import Button from "../../components/ui/Button";
 
 const DoctorAppointments = () => {
     const [appointments, setAppointments] = useState([]);
@@ -46,51 +50,81 @@ const DoctorAppointments = () => {
         getAppointments();
     }, []);
 
+    const getStatusVariant = (status) => {
+        switch (status?.toLowerCase()) {
+            case 'approved':
+                return 'success';
+            case 'rejected':
+                return 'error';
+            default:
+                return 'warning';
+        }
+    };
+
     return (
         <Layout>
-            <h1 className="text-2xl font-bold mb-4 text-center">Appointments List</h1>
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
-                    <thead>
-                        <tr>
-                            <th className="px-4 py-2 border-b">ID</th>
-                            <th className="px-4 py-2 border-b">Date & Time</th>
-                            <th className="px-4 py-2 border-b">Status</th>
-                            <th className="px-4 py-2 border-b">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <PageHeader title="My Appointments" subtitle="Manage your patient appointments" />
+
+            {appointments.length === 0 ? (
+                <div className="text-center py-12">
+                    <p className="text-gray-500 text-lg">No appointments found</p>
+                </div>
+            ) : (
+                <Table hoverable>
+                    <Table.Head>
+                        <Table.Row>
+                            <Table.Header>Patient</Table.Header>
+                            <Table.Header>Date & Time</Table.Header>
+                            <Table.Header>Status</Table.Header>
+                            <Table.Header>Actions</Table.Header>
+                        </Table.Row>
+                    </Table.Head>
+                    <Table.Body>
                         {appointments.map((appointment) => (
-                            <tr key={appointment._id} className="text-center hover:bg-gray-50">
-                                <td className="px-4 py-2 border-b">{appointment._id}</td>
-                                <td className="px-4 py-2 border-b">
-                                    {moment(appointment.date, "DD-MM-YYYY").format("DD-MM-YYYY")} &nbsp;
-                                    {moment(appointment.time, "HH:mm").format("HH:mm")}
-                                </td>
-                                <td className="px-4 py-2 border-b">{appointment.status}</td>
-                                <td className="px-4 py-2 border-b flex justify-center gap-2">
+                            <Table.Row key={appointment._id}>
+                                <Table.Cell>
+                                    <div className="font-medium text-gray-900">
+                                        {appointment.userInfo?.name}
+                                    </div>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <div className="text-gray-900">
+                                        {moment(appointment.date, "DD-MM-YYYY").format("MMM DD, YYYY")}
+                                    </div>
+                                    <div className="text-sm text-gray-500">
+                                        {moment(appointment.time, "HH:mm").format("hh:mm A")}
+                                    </div>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Badge variant={getStatusVariant(appointment.status)}>
+                                        {appointment.status || 'pending'}
+                                    </Badge>
+                                </Table.Cell>
+                                <Table.Cell>
                                     {appointment.status === "pending" && (
-                                        <>
-                                            <button
-                                                className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                                        <div className="flex gap-2">
+                                            <Button
+                                                variant="success"
+                                                size="sm"
                                                 onClick={() => handleStatus(appointment, "approved")}
                                             >
                                                 Approve
-                                            </button>
-                                            <button
-                                                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                            </Button>
+                                            <Button
+                                                variant="danger"
+                                                size="sm"
                                                 onClick={() => handleStatus(appointment, "reject")}
                                             >
                                                 Reject
-                                            </button>
-                                        </>
+                                            </Button>
+                                        </div>
                                     )}
-                                </td>
-                            </tr>
+                                </Table.Cell>
+                            </Table.Row>
                         ))}
-                    </tbody>
-                </table>
-            </div>
+                    </Table.Body>
+                </Table>
+            )}
         </Layout>
     );
 };
