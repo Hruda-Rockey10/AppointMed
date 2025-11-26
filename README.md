@@ -1,32 +1,110 @@
-# AppointMed Revamp
+# AppointMed - Doctor Appointment System
 
-This project has been revamped with a modern tech stack.
+A modern, full-stack MERN application for booking doctor appointments, managing profiles, and admin controls.
 
-## Structure
+## 🚀 Tech Stack
 
-- **client_v2**: The frontend built with React, Vite, Tailwind CSS v4, and Redux Toolkit.
-- **server.js**: The backend entry point.
-- **controllers**, **models**, **routes**: Backend logic for user, doctor, and admin operations.
-- **config**: Database configuration.
+- **Frontend:** React 19, Vite 7, Tailwind CSS v4, Redux Toolkit, React Router v6
+- **Backend:** Node.js, Express, MongoDB, Mongoose
+- **Authentication:** JWT, bcryptjs
 
-## Getting Started
+## 📂 Project Structure
 
-1.  **Install Dependencies:**
-    ```bash
-    npm install
-    cd client_v2
-    npm install
-    ```
+```
+AppointMed/
+├── client/                 # Frontend application (React + Vite)
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── features/       # Redux slices (state management)
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── pages/          # Application pages
+│   │   ├── services/       # API service layer
+│   │   └── styles/         # Global styles (Tailwind)
+├── server/                 # Backend application (Node + Express)
+│   ├── src/
+│   │   ├── config/         # Database & environment config
+│   │   ├── controllers/    # Request handlers
+│   │   ├── middlewares/    # Auth & error handling
+│   │   ├── models/         # Mongoose models
+│   │   └── routes/         # API routes
+└── README.md               # Project documentation
+```
 
-2.  **Run the App:**
-    From the root directory:
-    ```bash
-    npm run dev
-    ```
-    This will start both the backend (port 8080) and the new frontend (port 5173).
+## 🛠️ Setup & Installation
 
-## Features
+### Prerequisites
+- Node.js (v18+)
+- MongoDB (Local or Atlas)
 
--   **User Role**: Book appointments, apply to be a doctor, view notifications.
--   **Doctor Role**: Manage appointments, update profile.
--   **Admin Role**: Manage users and doctors.
+### 1. Clone the repository
+```bash
+git clone <repository-url>
+cd AppointMed
+```
+
+### 2. Install Dependencies
+
+**Frontend:**
+```bash
+cd client
+npm install
+```
+
+**Backend:**
+```bash
+cd server
+npm install
+```
+
+### 3. Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+PORT=8080
+NODE_MODE=development
+MONGO_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
+
+### 4. Run the Application
+
+**Frontend:**
+```bash
+cd client
+npm run dev
+```
+
+**Backend:**
+```bash
+cd server
+npm run dev
+```
+
+## 🎨 Tailwind CSS v4
+
+This project uses Tailwind CSS v4.
+- **No CSS Modules:** All styling is done via utility classes.
+- **Global Styles:** Defined in `client/src/styles/index.css`.
+- **Configuration:** `client/tailwind.config.js` and `client/postcss.config.js`.
+
+## 📝 API Endpoints
+
+### Auth
+- `POST /api/v1/user/login` - User login
+- `POST /api/v1/user/register` - User registration
+
+### User
+- `POST /api/v1/user/getUserData` - Get user profile
+- `POST /api/v1/user/apply-doctor` - Apply for doctor account
+- `POST /api/v1/user/book-appointment` - Book an appointment
+
+### Admin
+- `GET /api/v1/admin/getAllUsers` - Get all users
+- `GET /api/v1/admin/getAllDoctors` - Get all doctors
+- `POST /api/v1/admin/changeAccountStatus` - Approve/Reject doctor
+
+### Doctor
+- `POST /api/v1/doctor/getDoctorInfo` - Get doctor details
+- `POST /api/v1/doctor/updateProfile` - Update doctor profile
+- `GET /api/v1/doctor/doctor-appointments` - Get appointments

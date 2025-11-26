@@ -12,6 +12,7 @@ client_v2/build/
 
 # IDE
 .vscode/
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
