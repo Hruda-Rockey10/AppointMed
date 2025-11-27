@@ -197,7 +197,7 @@ const Navbar = () => {
               <div className="absolute right-0 mt-3 w-56 animate-in fade-in slide-in-from-top-2 duration-200">
                 <div className="rounded-2xl border border-blue-400/30 bg-gradient-to-br from-blue-950/90 to-slate-900/90 p-2 shadow-2xl backdrop-blur-xl">
                   <Link
-                    to="/profile"
+                    to={user?.isDoctor ? `/doctor/profile/${user?._id}` : "/profile"}
                     className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-gray-300 transition hover:bg-blue-500/10 hover:text-white"
                     onClick={() => setShowUserMenu(false)}
                   >

@@ -113,20 +113,36 @@ const applyDoctorController = async (req, res) => {
 //notification ctrl
 const getAllNotificationController = async (req, res) => {
   try {
+    console.log("Fetching notifications for user:", req.userId);
     const user = await userModel.findOne({ _id: req.userId });
-    const seenNotification = user.seenNotification;
-    const notification = user.notification;
+    
+    if (!user) {
+        console.log("User not found for notification fetch:", req.userId);
+        return res.status(404).send({
+            message: "User not found",
+            success: false,
+        });
+    }
+
+    const seenNotification = user.seenNotification || [];
+    const notification = user.notification || [];
+    
+    console.log(`Processing notifications. Unread: ${notification.length}, Seen: ${seenNotification.length}`);
+
     seenNotification.push(...notification);
     user.notification = [];
     user.seenNotification = seenNotification;
+    
     const updatedUser = await user.save();
+    console.log("Notifications marked as read and saved.");
+    
     res.status(200).send({
       success: true,
       message: "all notification marked as read",
       data: updatedUser,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error in getAllNotificationController:", error);
     res.status(500).send({
       message: "Error in notification",
       success: false,
@@ -183,8 +199,25 @@ const bookeAppointmnetController = async (req, res) => {
     req.body.date = moment(req.body.date, "YYYY-MM-DD").format("DD-MM-YYYY");
     req.body.time = moment(req.body.time, "HH:mm").format("HH:mm");
     req.body.status = "pending";
-    const newAppointment = new appointmentModel({ ...req.body, userId: req.userId });
+    
+    // Ensure IDs are strings to match appointmentModel schema
+    const appointmentData = {
+      ...req.body,
+      userId: req.userId.toString(),
+      doctorId: req.body.doctorId.toString(),
+    };
+    
+    console.log("Creating appointment with data:", {
+      userId: appointmentData.userId,
+      doctorId: appointmentData.doctorId,
+      date: appointmentData.date,
+      time: appointmentData.time
+    });
+    
+    const newAppointment = new appointmentModel(appointmentData);
     await newAppointment.save();
+    
+    console.log("Appointment saved successfully with ID:", newAppointment._id);
     
     // Try to send notification to doctor (optional - don't fail booking if doctor user not found)
     try {
@@ -264,16 +297,25 @@ const bookingAvailabilityController = async (req, res) => {
 //user appointments controller
 const userAppointmentsController = async (req, res) => {
   try {
+    console.log("Fetching appointments for userId:", req.userId);
+    
+    // userId is stored as String in appointmentModel
+    const userIdStr = req.userId.toString();
+    console.log("Querying with userId string:", userIdStr);
+    
     const appointments = await appointmentModel.find({
-      userId: req.userId,
+      userId: userIdStr,
     });
+    
+    console.log("Found user appointments:", appointments.length);
+    
     res.status(200).send({
       success: true,
       message: "Users Appointments Fetch Successfully",
       data: appointments,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error in userAppointmentsController:", error);
     res.status(500).send({
       success: false,
       error,

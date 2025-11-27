@@ -10,6 +10,11 @@ const Doctors = () => {
     const [filteredDoctors, setFilteredDoctors] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterStatus, setFilterStatus] = useState("all");
+    const [confirmationModal, setConfirmationModal] = useState({
+        show: false,
+        doctor: null,
+        status: null
+    });
     const dispatch = useDispatch();
 
     const getDoctors = async () => {
@@ -30,27 +35,28 @@ const Doctors = () => {
         }
     };
 
-    const handleAccountStatus = async (record, status) => {
+    const handleAccountStatus = (doctor, status) => {
+        setConfirmationModal({ show: true, doctor, status });
+    };
+
+    const confirmAction = async () => {
+        const { doctor, status } = confirmationModal;
+        setConfirmationModal({ show: false, doctor: null, status: null });
+
+        if (!doctor || !status) return;
+
         const actionText = status === "approved" ? "approve" : status === "rejected" ? "reject" : "revoke";
-        
-        // Show confirmation dialog
-        const confirmed = window.confirm(`Are you sure you want to ${actionText} Dr. ${record.firstName} ${record.lastName}?`);
-        
-        if (!confirmed) {
-            console.log("Action cancelled by user");
-            return;
-        }
 
         try {
             dispatch(showLoading());
-            console.log("Sending request to:", record._id, "with status:", status);
-            const res = await adminService.changeDoctorStatus(record._id, status);
+            console.log("Sending request to:", doctor._id, "with status:", status);
+            const res = await adminService.changeDoctorStatus(doctor._id, status);
             dispatch(hideLoading());
-            
+
             console.log("Response received:", res);
-            
+
             if (res.success) {
-                alert(res.message || `Doctor ${actionText}ed successfully!`);
+                // alert(res.message || `Doctor ${actionText}ed successfully!`); // Optional: remove alert if modal is enough
                 getDoctors();
             } else {
                 alert(res.message || `Failed to ${actionText} doctor`);
@@ -259,7 +265,7 @@ const Doctors = () => {
                                                 </div>
                                                 <div className="flex-1">
                                                     <h3 className="text-lg font-bold text-white">
-                                                        Dr. {doctor.firstName} {doctor.lastName}
+                                                        {doctor.firstName} {doctor.lastName}
                                                     </h3>
                                                     <div className="mt-2 flex flex-wrap gap-2">
                                                         <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3 py-1">
@@ -344,6 +350,36 @@ const Doctors = () => {
                             </div>
                         );
                     })}
+                </div>
+            )}
+            {/* Confirmation Modal */}
+            {confirmationModal.show && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="w-full max-w-md overflow-hidden rounded-2xl border border-blue-400/30 bg-slate-900 p-6 shadow-2xl">
+                        <h3 className="text-xl font-bold text-white">Confirm Action</h3>
+                        <p className="mt-2 text-gray-300">
+                            Are you sure you want to <span className="font-bold text-blue-400">{confirmationModal.status === "approved" ? "approve" : "reject"}</span> {confirmationModal.doctor?.firstName} {confirmationModal.doctor?.lastName}?
+                        </p>
+                        
+                        <div className="mt-6 flex justify-end gap-3">
+                            <button
+                                onClick={() => setConfirmationModal({ show: false, doctor: null, status: null })}
+                                className="rounded-xl border border-gray-600 bg-transparent px-4 py-2 text-sm font-semibold text-gray-300 hover:bg-gray-800"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmAction}
+                                className={`rounded-xl px-4 py-2 text-sm font-semibold text-white shadow-lg ${
+                                    confirmationModal.status === "approved"
+                                        ? "bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20"
+                                        : "bg-red-500 hover:bg-red-600 shadow-red-500/20"
+                                }`}
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </Layout>

@@ -26,12 +26,17 @@ const Profile = () => {
 
   const getDoctorInfo = async () => {
     try {
+      console.log("Fetching doctor info. params.id:", params.id);
       let res;
       if (params.id) {
+        console.log("Using getDoctorInfo with ID:", params.id);
         res = await doctorService.getDoctorInfo(params.id);
+        console.log("getDoctorInfo response:", res);
       } else {
         // If no ID, fetch the current doctor's profile (My Profile mode)
+        console.log("Using getDoctorProfile (no ID provided)");
         res = await doctorService.getDoctorProfile();
+        console.log("getDoctorProfile response:", res);
         // The service returns response.data directly for getDoctorProfile, but response object for getDoctorInfo
         // We need to normalize this. 
         // Actually, looking at the service:
@@ -49,11 +54,17 @@ const Profile = () => {
       // Let's handle the response structure difference
       const data = params.id ? res.data : res;
       
+      console.log("Processed data:", data);
+      
       if (data.success) {
+        console.log("Setting doctor data:", data.data);
         setDoctor(data.data);
+      } else {
+        console.error("API call unsuccessful:", data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error in getDoctorInfo:", error);
+      console.error("Error response:", error.response?.data);
     }
   };
 
