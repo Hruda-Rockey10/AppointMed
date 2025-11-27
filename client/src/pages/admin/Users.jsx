@@ -56,9 +56,26 @@ const Users = () => {
         setFilteredUsers(filtered);
     }, [searchTerm, filterRole, users]);
 
-    const handleBlockUser = (userId) => {
-        if (window.confirm("Are you sure you want to block this user?")) {
-            alert("Block user functionality to be implemented");
+    const handleBlockUser = async (user) => {
+        const action = user.isBlocked ? "unblock" : "block";
+        if (!window.confirm(`Are you sure you want to ${action} ${user.name}?`)) {
+            return;
+        }
+
+        try {
+            dispatch(showLoading());
+            const res = await adminService.blockUser(user._id, !user.isBlocked);
+            dispatch(hideLoading());
+            if (res.success) {
+                alert(res.message || `User ${action}ed successfully!`);
+                getUsers();
+            } else {
+                alert(res.message || `Failed to ${action} user`);
+            }
+        } catch (error) {
+            dispatch(hideLoading());
+            alert("Something went wrong");
+            console.error(`Error ${action}ing user:`, error);
         }
     };
 
@@ -231,13 +248,17 @@ const Users = () => {
                                             )}
                                         </div>
 
-                                        {/* Block Button */}
+                                        {/* Block/Unblock Button */}
                                         <button
-                                            onClick={() => handleBlockUser(user._id)}
-                                            className="flex items-center gap-2 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-400 transition-all hover:bg-red-500/20"
+                                            onClick={() => handleBlockUser(user)}
+                                            className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold transition-all ${
+                                                user.isBlocked
+                                                    ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
+                                                    : "border-red-400/30 bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                                            }`}
                                         >
                                             <FaBan className="text-xs" />
-                                            Block
+                                            {user.isBlocked ? "Unblock" : "Block"}
                                         </button>
                                     </div>
                                 </div>

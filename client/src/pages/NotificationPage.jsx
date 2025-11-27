@@ -52,6 +52,13 @@ const NotificationPage = () => {
     const hasUnreadNotifications = user?.notification?.length > 0;
     const hasReadNotifications = user?.seenNotification?.length > 0;
 
+    // Auto-mark all as read when component mounts
+    React.useEffect(() => {
+        if (hasUnreadNotifications) {
+            handleMarkAllRead();
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <Layout>
             <PageHeader

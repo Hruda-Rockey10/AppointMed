@@ -36,6 +36,7 @@ const doctorsData = [
     education: "MBBS, MD (Cardiology)",
     institute: "AIIMS, New Delhi",
     about: "Dr. Rajesh Sharma is a renowned Cardiologist with over 15 years of experience in treating complex heart conditions.",
+    practiceLog: "Senior Consultant at Max Super Speciality Hospital (2018-Present) • Interventional Cardiologist at Fortis Hospital Delhi (2013-2018) • Attending Physician at AIIMS Cardiology Dept (2010-2013) • Successfully performed 500+ angioplasty procedures • Published 15+ research papers in peer-reviewed journals",
     status: "approved",
   },
   {
@@ -60,6 +61,7 @@ const doctorsData = [
     education: "MBBS, MD (Dermatology)",
     institute: "Grant Medical College, Mumbai",
     about: "Dr. Priya Patel specializes in clinical and cosmetic dermatology, providing personalized skincare solutions.",
+    practiceLog: "Consultant Dermatologist at Kokilaben Hospital Mumbai (2020-Present) • Associate at SkinVita Clinic (2016-2020) • Trained in advanced laser treatments and chemical peels • Managed 2000+ patients with chronic skin conditions • Regular speaker at dermatology conferences",
     status: "approved",
   },
   {
@@ -84,6 +86,7 @@ const doctorsData = [
     education: "MBBS, DM (Neurology)",
     institute: "NIMHANS, Bangalore",
     about: "Dr. Amit Verma is a leading Neurologist known for his expertise in treating stroke and epilepsy.",
+    practiceLog: "Head of Neurology at Apollo Hospitals Bangalore (2018-Present) • Consultant at Manipal Hospital (2012-2018) • Specialized in stroke management and epilepsy treatment • Conducted 30+ clinical trials for neurological disorders • Awarded Best Neurologist in Karnataka 2022",
     status: "approved",
   },
   {
@@ -108,6 +111,7 @@ const doctorsData = [
     education: "MBBS, MD (Pediatrics)",
     institute: "Osmania Medical College, Hyderabad",
     about: "Dr. Sneha Reddy is a compassionate Pediatrician dedicated to the health and well-being of children.",
+    practiceLog: "Senior Pediatrician at Rainbow Children's Hospital (2017-Present) • Pediatric Consultant at Care Hospitals (2014-2017) • Expert in neonatal care and childhood vaccinations • Treated 5000+ children for various pediatric conditions • Active member of Indian Academy of Pediatrics",
     status: "approved",
   },
   {
@@ -132,6 +136,7 @@ const doctorsData = [
     education: "MBBS, MS (Orthopedics)",
     institute: "Madras Medical College, Chennai",
     about: "Dr. Vikram Singh is an expert Orthopedic Surgeon specializing in joint replacement and sports injuries.",
+    practiceLog: "Chief Orthopedic Surgeon at MIOT Hospitals Chennai (2015-Present) • Sports Medicine Consultant (2008-2015) • Performed 800+ successful joint replacement surgeries • Team doctor for Tamil Nadu Cricket Association • Fellow of Indian Orthopaedic Association",
     status: "approved",
   },
   {
@@ -156,6 +161,7 @@ const doctorsData = [
     education: "MBBS, MD (Obstetrics & Gynecology)",
     institute: "Medical College and Hospital, Kolkata",
     about: "Dr. Anjali Gupta provides comprehensive care for women's health, including pregnancy and reproductive health.",
+    practiceLog: "Senior Gynecologist at Apollo Gleneagles Kolkata (2016-Present) • Consultant at Belle Vue Clinic (2010-2016) • Successfully managed 1500+ normal and high-risk deliveries • Expert in minimally invasive gynecological surgeries • Trained in fertility treatments and IVF",
     status: "approved",
   },
   {
@@ -180,6 +186,7 @@ const doctorsData = [
     education: "MBBS, MS (Ophthalmology)",
     institute: "B.J. Medical College, Ahmedabad",
     about: "Dr. Rohan Mehta is a skilled Ophthalmologist offering advanced eye care services and surgeries.",
+    practiceLog: "Consultant Ophthalmologist at LV Prasad Eye Institute Ahmedabad (2019-Present) • Associate at Divyajyoti Eye Hospital (2015-2019) • Performed 1200+ cataract surgeries with excellent outcomes • Specialized in LASIK and corneal transplants • Member of All India Ophthalmological Society",
     status: "approved",
   },
   {
@@ -204,6 +211,7 @@ const doctorsData = [
     education: "MBBS, MD (Psychiatry)",
     institute: "AFMC, Pune",
     about: "Dr. Kavita Iyer is a dedicated Psychiatrist helping patients achieve mental wellness through therapy and medication.",
+    practiceLog: "Senior Psychiatrist at Ruby Hall Clinic Pune (2017-Present) • Mental Health Consultant at Sassoon Hospital (2013-2017) • Specialized in treating anxiety, depression, and PTSD • Conducted 100+ mental health awareness workshops • Certified in Cognitive Behavioral Therapy (CBT)",
     status: "approved",
   },
   {
@@ -228,6 +236,7 @@ const doctorsData = [
     education: "MBBS, DM (Cardiology)",
     institute: "Amrita Institute of Medical Sciences, Kochi",
     about: "Dr. Arjun Nair is a senior Cardiologist with extensive experience in interventional cardiology.",
+    practiceLog: "Director of Cardiology at Amrita Institute Kochi (2015-Present) • Senior Consultant at Lisie Hospital (2005-2015) • Performed 2000+ complex cardiac interventions • Pioneer in TAVI procedures in Kerala • President of Kerala Chapter of Cardiological Society of India",
     status: "approved",
   },
   {
@@ -252,6 +261,7 @@ const doctorsData = [
     education: "BDS, MDS",
     institute: "SMS Medical College, Jaipur",
     about: "Dr. Meera Joshi is a gentle Dentist providing high-quality dental care for the whole family.",
+    practiceLog: "Dental Surgeon at Fortis Escorts Hospital Jaipur (2019-Present) • Private Practice at SmileCare Dental Clinic (2018-Present) • Specialized in cosmetic dentistry and dental implants • Completed 3000+ root canal treatments • Certified in Invisalign clear aligner therapy",
     status: "approved",
   },
   {
@@ -276,6 +286,7 @@ const doctorsData = [
     education: "MBBS, MS (ENT)",
     institute: "Government Medical College, Thiruvananthapuram",
     about: "Dr. Suresh Pillai specializes in disorders of the ear, nose, and throat, offering medical and surgical treatments.",
+    practiceLog: "Consultant ENT Surgeon at Trivandrum Medical College (2016-Present) • Associate at KIMS Hospital (2011-2016) • Expert in endoscopic sinus surgery and cochlear implants • Successfully performed 600+ ENT surgeries • Regular contributor to Indian Journal of Otolaryngology",
     status: "approved",
   },
   {
@@ -300,6 +311,7 @@ const doctorsData = [
     education: "M.Sc. (Nutrition & Dietetics)",
     institute: "PGIMER, Chandigarh",
     about: "Dr. Neha Kapoor is a certified Dietitian helping clients achieve their health goals through personalized nutrition plans.",
+    practiceLog: "Clinical Dietitian at Max Superspeciality Mohali (2018-Present) • Nutrition Consultant at FitIndia Wellness Center (2017-2018) • Managed nutrition programs for 1000+ patients with diabetes and obesity • Conducted corporate wellness workshops • Certified diabetes educator",
     status: "approved",
   },
   {
@@ -324,6 +336,7 @@ const doctorsData = [
     education: "MBBS, DM (Gastroenterology)",
     institute: "Government Medical College, Surat",
     about: "Dr. Rahul Desai is a leading Gastroenterologist treating digestive system disorders with advanced techniques.",
+    practiceLog: "Head of Gastroenterology at Sunshine Global Hospital Surat (2015-Present) • Consultant at Kiran Hospital (2009-2015) • Performed 1500+ therapeutic endoscopy and colonoscopy procedures • Expert in managing inflammatory bowel disease • Published 10+ papers on gastroenterology",
     status: "approved",
   },
   {
@@ -348,6 +361,7 @@ const doctorsData = [
     education: "MBBS, MD (Pediatrics)",
     institute: "KGMU, Lucknow",
     about: "Dr. Pooja Bhatia is a friendly Pediatrician providing expert care for infants, children, and adolescents.",
+    practiceLog: "Senior Consultant at Sahara Hospital Lucknow (2018-Present) • Pediatrician at Mayo Clinic (2015-2018) • Specialized in childhood infectious diseases and developmental pediatrics • Immunization coordinator for 50+ schools • Active in government pulse polio campaigns",
     status: "approved",
   },
   {
@@ -372,6 +386,7 @@ const doctorsData = [
     education: "MBBS, MS (Orthopedics)",
     institute: "Gandhi Medical College, Bhopal",
     about: "Dr. Manish Tiwari is a dedicated Orthopedic Surgeon specializing in trauma and joint replacement surgeries.",
+    practiceLog: "Consultant Orthopedic Surgeon at Chirayu Hospital Bhopal (2016-Present) • Trauma Surgeon at AIIMS Bhopal (2013-2016) • Performed 400+ hip and knee replacement surgeries • Expert in arthroscopic procedures • Visiting faculty at Gandhi Medical College",
     status: "approved",
   },
 ];

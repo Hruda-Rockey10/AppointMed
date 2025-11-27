@@ -32,5 +32,15 @@ export const adminService = {
     });
     return response.data;
   },
-};
 
+  /**
+   * Block or unblock a user
+   */
+  blockUser: async (userId, isBlocked) => {
+    const response = await api.post('/admin/blockUser', {
+      userId,
+      isBlocked,
+    });
+    return response.data;
+  },
+};

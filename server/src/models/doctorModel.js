@@ -60,6 +60,10 @@ const doctorSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    practiceLog: {
+      type: String,
+      default: "",
+    },
     profilePhoto: {
       type: String,
       default: "",

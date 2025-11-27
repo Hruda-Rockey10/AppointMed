@@ -32,24 +32,34 @@ const Doctors = () => {
 
     const handleAccountStatus = async (record, status) => {
         const actionText = status === "approved" ? "approve" : status === "rejected" ? "reject" : "revoke";
-        if (!window.confirm(`Are you sure you want to ${actionText} Dr. ${record.firstName} ${record.lastName}?`)) {
+        
+        // Show confirmation dialog
+        const confirmed = window.confirm(`Are you sure you want to ${actionText} Dr. ${record.firstName} ${record.lastName}?`);
+        
+        if (!confirmed) {
+            console.log("Action cancelled by user");
             return;
         }
 
         try {
             dispatch(showLoading());
+            console.log("Sending request to:", record._id, "with status:", status);
             const res = await adminService.changeDoctorStatus(record._id, status);
             dispatch(hideLoading());
+            
+            console.log("Response received:", res);
+            
             if (res.success) {
                 alert(res.message || `Doctor ${actionText}ed successfully!`);
                 getDoctors();
             } else {
-                alert(res.message || "Failed to update doctor status");
+                alert(res.message || `Failed to ${actionText} doctor`);
             }
         } catch (error) {
             dispatch(hideLoading());
-            alert("Something went wrong");
             console.error("Error updating doctor status:", error);
+            console.error("Error details:", error.response?.data);
+            alert("Something went wrong. Check console for details.");
         }
     };
 
@@ -275,19 +285,27 @@ const Doctors = () => {
                                                 </div>
 
                                                 {/* Action Buttons */}
-                                                <div className="flex gap-2">
+                                                <div className="relative z-10 flex gap-2">
                                                     {doctor.status === "pending" ? (
                                                         <>
                                                             <button
-                                                                onClick={() => handleAccountStatus(doctor, "approved")}
-                                                                className="flex items-center gap-2 rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-400 transition-all hover:bg-emerald-500/20"
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleAccountStatus(doctor, "approved");
+                                                                }}
+                                                                className="flex items-center gap-2 rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-400 transition-all hover:bg-emerald-500/20 cursor-pointer"
                                                             >
                                                                 <FaCheck className="text-xs" />
                                                                 Approve
                                                             </button>
                                                             <button
-                                                                onClick={() => handleAccountStatus(doctor, "rejected")}
-                                                                className="flex items-center gap-2 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-400 transition-all hover:bg-red-500/20"
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleAccountStatus(doctor, "rejected");
+                                                                }}
+                                                                className="flex items-center gap-2 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-400 transition-all hover:bg-red-500/20 cursor-pointer"
                                                             >
                                                                 <FaTimes className="text-xs" />
                                                                 Reject
@@ -295,16 +313,24 @@ const Doctors = () => {
                                                         </>
                                                     ) : doctor.status === "approved" ? (
                                                         <button
-                                                            onClick={() => handleAccountStatus(doctor, "rejected")}
-                                                            className="flex items-center gap-2 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-400 transition-all hover:bg-red-500/20"
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleAccountStatus(doctor, "rejected");
+                                                            }}
+                                                            className="flex items-center gap-2 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-400 transition-all hover:bg-red-500/20 cursor-pointer"
                                                         >
                                                             <FaTimes className="text-xs" />
                                                             Revoke
                                                         </button>
                                                     ) : (
                                                         <button
-                                                            onClick={() => handleAccountStatus(doctor, "approved")}
-                                                            className="flex items-center gap-2 rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-400 transition-all hover:bg-emerald-500/20"
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleAccountStatus(doctor, "approved");
+                                                            }}
+                                                            className="flex items-center gap-2 rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-400 transition-all hover:bg-emerald-500/20 cursor-pointer"
                                                             >
                                                             <FaCheck className="text-xs" />
                                                             Approve
