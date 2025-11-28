@@ -54,15 +54,15 @@ A modern, full-stack healthcare appointment management system that seamlessly co
 
 ### Login Page
 
-<!-- Add screenshot: ![Login Page](./screenshots/login.png) -->
+![Login Page](./screenshots/login.png)
 
-### Home Dashboard
+### User Dashboard
 
-<!-- Add screenshot: ![Home Dashboard](./screenshots/home.png) -->
+![User Dashboard](./screenshots/user_dashboard.png)
 
 ### Find Doctors
 
-<!-- Add screenshot: ![Doctors Listing](./screenshots/doctors.png) -->
+![Doctors Listing](./screenshots/doctors.png)
 
 ### Book Appointment
 
@@ -70,7 +70,7 @@ A modern, full-stack healthcare appointment management system that seamlessly co
 
 ### Admin Dashboard
 
-<!-- Add screenshot: ![Admin Dashboard](./screenshots/admin.png) -->
+![Admin Dashboard](./screenshots/admin_dashboard.png)
 
 ### Doctor Profile
 
@@ -134,8 +134,9 @@ npm run server
 
 The application will be available at:
 
-- **Frontend**: http://localhost:5173
-- **Backend**: http://localhost:8001
+- **Live Demo**: https://hruda-appointmed.vercel.app/
+- **Frontend**: http://localhost:5173 (Local)
+- **Backend**: http://localhost:8001 (Local)
 
 ## 📁 Project Structure
 
