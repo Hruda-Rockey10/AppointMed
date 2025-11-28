@@ -113,7 +113,7 @@ Create a `.env` file in the `server` directory:
 ```env
 MONGO_URL=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-PORT=8001
+PORT=8080
 ```
 
 ### Run the Application
@@ -128,7 +128,7 @@ npm run dev
 # Client (runs on port 5173)
 npm run client
 
-# Server (runs on port 8001)
+# Server (runs on port 8080)
 npm run server
 ```
 
@@ -136,7 +136,7 @@ The application will be available at:
 
 - **Live Demo**: https://hruda-appointmed.vercel.app/
 - **Frontend**: http://localhost:5173 (Local)
-- **Backend**: http://localhost:8001 (Local)
+- **Backend**: http://localhost:8080 (Local)
 
 ## 📁 Project Structure
 
