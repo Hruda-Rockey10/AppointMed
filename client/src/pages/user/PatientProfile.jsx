@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Layout from "../../components/layout/Layout";
-import { Badge, Button, Table, ProfilePhotoUpload, SectionHeader } from "../../components/common";
+import { Badge, Button, Table } from "../../components/common";
 import { userService } from "../../services/userService";
+import { setUser } from "../../features/user/userSlice";
 import moment from "moment";
-import { FaEnvelope, FaPhone, FaRegEdit, FaCalendarCheck, FaUser, FaCamera } from "react-icons/fa";
+import { FaEnvelope, FaPhone, FaRegEdit, FaCalendarCheck, FaUser, FaCamera, FaSave, FaTimes } from "react-icons/fa";
 
 const PatientProfile = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const [appointments, setAppointments] = useState([]);
   const [profilePhoto, setProfilePhoto] = useState(user?.profilePhoto || "");
+  const [isEditingHealth, setIsEditingHealth] = useState(false);
+  const [healthData, setHealthData] = useState({
+    height: user?.height || "",
+    weight: user?.weight || "",
+    bloodGroup: user?.bloodGroup || "",
+    age: user?.age || "",
+    phone: user?.phone || "",
+  });
 
   const getAppointments = async () => {
     try {
@@ -29,12 +39,42 @@ const PatientProfile = () => {
         ...user,
         profilePhoto: photoData,
       });
-      if (res.data.success) {
+      if (res.success) {
         console.log("Profile photo updated");
       }
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleHealthSave = async () => {
+    try {
+      const res = await userService.updateUserProfile({
+        ...user,
+        ...healthData,
+      });
+      if (res.success) {
+        alert("Health metrics updated successfully!");
+        dispatch(setUser(res.data));
+        setIsEditingHealth(false);
+      } else {
+        alert("Failed to update health metrics");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Error updating health metrics");
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setHealthData({
+      height: user?.height || "",
+      weight: user?.weight || "",
+      bloodGroup: user?.bloodGroup || "",
+      age: user?.age || "",
+      phone: user?.phone || "",
+    });
+    setIsEditingHealth(false);
   };
 
   useEffect(() => {
@@ -109,25 +149,109 @@ const PatientProfile = () => {
         <div className="space-y-4 rounded-3xl border border-slate-700 bg-slate-800/50 p-6 shadow-inner">
           <div className="flex items-center justify-between">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-slate-400">Health metrics</p>
-            <button className="btn-outline inline-flex items-center gap-2 text-xs">
-              <FaRegEdit /> Update
-            </button>
-          </div>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { label: "Height", value: `${user?.height || "--"} cm`, color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-400/20" },
-              { label: "Weight", value: `${user?.weight || "--"} kg`, color: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-400/20" },
-              { label: "Blood group", value: user?.bloodGroup || "--", color: "text-rose-400", bg: "bg-rose-400/10", border: "border-rose-400/20" },
-              { label: "Age", value: `${user?.age || "--"} yrs`, color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-400/20" },
-            ].map((metric) => (
-              <div key={metric.label} className={`rounded-2xl border ${metric.border} ${metric.bg} p-4 text-center transition-transform hover:scale-105`}>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-slate-400">
-                  {metric.label}
-                </p>
-                <p className={`mt-2 text-xl font-bold ${metric.color}`}>{metric.value}</p>
+            {!isEditingHealth ? (
+              <button 
+                onClick={() => setIsEditingHealth(true)}
+                className="inline-flex items-center gap-2 rounded-lg border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-xs font-semibold text-blue-400 transition-all hover:bg-blue-500/20"
+              >
+                <FaRegEdit /> Update
+              </button>
+            ) : (
+              <div className="flex gap-2">
+                <button 
+                  onClick={handleHealthSave}
+                  className="inline-flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-600"
+                >
+                  <FaSave /> Save
+                </button>
+                <button 
+                  onClick={handleCancelEdit}
+                  className="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-700"
+                >
+                  <FaTimes /> Cancel
+                </button>
               </div>
-            ))}
+            )}
           </div>
+
+          {!isEditingHealth ? (
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { label: "Height", value: `${user?.height || "--"} cm`, color: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-400/20" },
+                { label: "Weight", value: `${user?.weight || "--"} kg`, color: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-400/20" },
+                { label: "Blood group", value: user?.bloodGroup || "--", color: "text-rose-400", bg: "bg-rose-400/10", border: "border-rose-400/20" },
+                { label: "Age", value: `${user?.age || "--"} yrs`, color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-400/20" },
+              ].map((metric) => (
+                <div key={metric.label} className={`rounded-2xl border ${metric.border} ${metric.bg} p-4 text-center transition-transform hover:scale-105`}>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-slate-400">
+                    {metric.label}
+                  </p>
+                  <p className={`mt-2 text-xl font-bold ${metric.color}`}>{metric.value}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Height (cm)</label>
+                <input
+                  type="number"
+                  value={healthData.height}
+                  onChange={(e) => setHealthData({ ...healthData, height: e.target.value })}
+                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  placeholder="Enter height in cm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Weight (kg)</label>
+                <input
+                  type="number"
+                  value={healthData.weight}
+                  onChange={(e) => setHealthData({ ...healthData, weight: e.target.value })}
+                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  placeholder="Enter weight in kg"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Blood Group</label>
+                <select
+                  value={healthData.bloodGroup}
+                  onChange={(e) => setHealthData({ ...healthData, bloodGroup: e.target.value })}
+                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                >
+                  <option value="">Select blood group</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Age (years)</label>
+                <input
+                  type="number"
+                  value={healthData.age}
+                  onChange={(e) => setHealthData({ ...healthData, age: e.target.value })}
+                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  placeholder="Enter age"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Phone Number</label>
+                <input
+                  type="tel"
+                  value={healthData.phone}
+                  onChange={(e) => setHealthData({ ...healthData, phone: e.target.value })}
+                  className="w-full rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  placeholder="Enter phone number"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Recent Appointments */}

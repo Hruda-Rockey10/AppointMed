@@ -24,18 +24,13 @@ const DoctorList = ({ doctor }) => {
             <div className="flex items-center gap-4">
               {/* Avatar */}
               <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-2xl font-bold text-white shadow-lg shadow-blue-500/50">
-                {doctor.firstName?.[0]}{doctor.lastName?.[0]}
+                {doctor.firstName ? doctor.firstName[0] : 'D'}
               </div>
               
-              {/* Name & Specialty */}
+              {/* Name & Specialization */}
               <div>
-                <h3 className="text-lg font-bold text-white">
-                  Dr. {doctor.firstName} {doctor.lastName}
-                </h3>
-                <div className="mt-1 inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-3 py-1">
-                  <FaStethoscope className="text-xs text-blue-400" />
-                  <span className="text-xs font-semibold text-blue-400">{doctor.specialization}</span>
-                </div>
+                <h3 className="text-lg font-bold text-white">Dr. {doctor.firstName} {doctor.lastName}</h3>
+                <p className="text-sm text-blue-400">{doctor.specialization}</p>
               </div>
             </div>
 

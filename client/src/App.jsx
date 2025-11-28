@@ -112,7 +112,7 @@ function App() {
           path="/notification"
           element={
             <ProtectedRoute>
-              <NotificationPage />
+              <Notifications />
             </ProtectedRoute>
           }
         />

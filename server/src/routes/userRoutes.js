@@ -6,6 +6,7 @@ const {
   applyDoctorController,
   getAllNotificationController,
   deleteAllNotificationController,
+  updateUserProfileController,
   getAllDocotrsController,
   bookeAppointmnetController,
   bookingAvailabilityController,
@@ -54,5 +55,8 @@ router.post(
   bookingAvailabilityController
 );
 router.get("/user-appointments", authMiddleware, userAppointmentsController);
+
+// UPDATE USER PROFILE
+router.post("/updateUserProfile", authMiddleware, updateUserProfileController);
 
 module.exports = router;

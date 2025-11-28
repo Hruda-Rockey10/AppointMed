@@ -38,6 +38,11 @@ const loginController = async (req, res) => {
         .status(200)
         .send({ message: "user not found", success: false });
     }
+    if (user.isBlocked) {
+      return res
+        .status(200)
+        .send({ message: "Your account has been blocked", success: false });
+    }
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) {
       return res
@@ -111,30 +116,40 @@ const applyDoctorController = async (req, res) => {
 };
 
 //notification ctrl
+//notification ctrl
 const getAllNotificationController = async (req, res) => {
   try {
-    console.log("Fetching notifications for user:", req.userId);
     const user = await userModel.findOne({ _id: req.userId });
-    
     if (!user) {
-        console.log("User not found for notification fetch:", req.userId);
-        return res.status(404).send({
-            message: "User not found",
-            success: false,
+      return res.status(404).send({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    const notifications = user.notification || [];
+    
+    // If no new notifications, just return the user
+    if (notifications.length === 0) {
+        user.password = undefined;
+        return res.status(200).send({
+            success: true,
+            message: "No new notifications",
+            data: user,
         });
     }
 
-    const seenNotification = user.seenNotification || [];
-    const notification = user.notification || [];
+    // Move notifications to seenNotification and clear notification array
+    const updatedUser = await userModel.findByIdAndUpdate(
+      req.userId,
+      {
+        $push: { seenNotification: { $each: notifications } },
+        $set: { notification: [] }
+      },
+      { new: true }
+    );
     
-    console.log(`Processing notifications. Unread: ${notification.length}, Seen: ${seenNotification.length}`);
-
-    seenNotification.push(...notification);
-    user.notification = [];
-    user.seenNotification = seenNotification;
-    
-    const updatedUser = await user.save();
-    console.log("Notifications marked as read and saved.");
+    updatedUser.password = undefined;
     
     res.status(200).send({
       success: true,
@@ -146,7 +161,7 @@ const getAllNotificationController = async (req, res) => {
     res.status(500).send({
       message: "Error in notification",
       success: false,
-      error,
+      error: error.message,
     });
   }
 };
@@ -154,22 +169,33 @@ const getAllNotificationController = async (req, res) => {
 // delete notifications
 const deleteAllNotificationController = async (req, res) => {
   try {
-    const user = await userModel.findOne({ _id: req.userId });
-    user.notification = [];
-    user.seenNotification = [];
-    const updatedUser = await user.save();
+    const updatedUser = await userModel.findByIdAndUpdate(
+        req.userId,
+        { $set: { notification: [], seenNotification: [] } },
+        { new: true }
+    );
+
+    if (!updatedUser) {
+        return res.status(404).send({
+            message: "User not found",
+            success: false,
+        });
+    }
+
     updatedUser.password = undefined;
+    console.log("Deleted all notifications for user:", req.userId);
+    console.log("Seen count after delete:", updatedUser.seenNotification.length);
     res.status(200).send({
       success: true,
       message: "Notifications Deleted successfully",
       data: updatedUser,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error in deleteAllNotificationController:", error);
     res.status(500).send({
       success: false,
       message: "unable to delete all notifications",
-      error,
+      error: error.message,
     });
   }
 };
@@ -336,4 +362,62 @@ module.exports = {
   bookingAvailabilityController,
   userAppointmentsController,
 
+};
+
+// Update user profile
+const updateUserProfileController = async (req, res) => {
+  try {
+    const { height, weight, bloodGroup, age, phone } = req.body;
+    
+    const updatedUser = await userModel.findByIdAndUpdate(
+      req.userId,
+      {
+        $set: {
+          height,
+          weight,
+          bloodGroup,
+          age,
+          phone,
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    updatedUser.password = undefined;
+    console.log("Updated user profile for:", req.userId);
+    
+    res.status(200).send({
+      success: true,
+      message: "Profile updated successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log("Error in updateUserProfileController:", error);
+    res.status(500).send({
+      success: false,
+      message: "Unable to update profile",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  loginController,
+  registerController,
+  authController,
+  applyDoctorController,
+  getAllNotificationController,
+  deleteAllNotificationController,
+  updateUserProfileController,
+  getAllDocotrsController,
+  bookeAppointmnetController,
+  bookingAvailabilityController,
+  userAppointmentsController,
 };

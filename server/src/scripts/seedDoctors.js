@@ -15,7 +15,7 @@ connectDB();
 
 const doctorsData = [
   {
-    firstName: "Dr. Rajesh",
+    firstName: "Rajesh",
     lastName: "Sharma",
     email: "rajesh.sharma@example.com",
     phone: "9876543210",
@@ -40,7 +40,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Priya",
+    firstName: "Priya",
     lastName: "Patel",
     email: "priya.patel@example.com",
     phone: "9876543211",
@@ -65,7 +65,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Amit",
+    firstName: "Amit",
     lastName: "Verma",
     email: "amit.verma@example.com",
     phone: "9876543212",
@@ -90,7 +90,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Sneha",
+    firstName: "Sneha",
     lastName: "Reddy",
     email: "sneha.reddy@example.com",
     phone: "9876543213",
@@ -115,7 +115,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Vikram",
+    firstName: "Vikram",
     lastName: "Singh",
     email: "vikram.singh@example.com",
     phone: "9876543214",
@@ -140,7 +140,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Anjali",
+    firstName: "Anjali",
     lastName: "Gupta",
     email: "anjali.gupta@example.com",
     phone: "9876543215",
@@ -165,7 +165,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Rohan",
+    firstName: "Rohan",
     lastName: "Mehta",
     email: "rohan.mehta@example.com",
     phone: "9876543216",
@@ -190,7 +190,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Kavita",
+    firstName: "Kavita",
     lastName: "Iyer",
     email: "kavita.iyer@example.com",
     phone: "9876543217",
@@ -215,7 +215,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Arjun",
+    firstName: "Arjun",
     lastName: "Nair",
     email: "arjun.nair@example.com",
     phone: "9876543218",
@@ -240,7 +240,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Meera",
+    firstName: "Meera",
     lastName: "Joshi",
     email: "meera.joshi@example.com",
     phone: "9876543219",
@@ -265,7 +265,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Suresh",
+    firstName: "Suresh",
     lastName: "Pillai",
     email: "suresh.pillai@example.com",
     phone: "9876543220",
@@ -290,7 +290,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Neha",
+    firstName: "Neha",
     lastName: "Kapoor",
     email: "neha.kapoor@example.com",
     phone: "9876543221",
@@ -315,7 +315,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Rahul",
+    firstName: "Rahul",
     lastName: "Desai",
     email: "rahul.desai@example.com",
     phone: "9876543222",
@@ -340,7 +340,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Pooja",
+    firstName: "Pooja",
     lastName: "Bhatia",
     email: "pooja.bhatia@example.com",
     phone: "9876543223",
@@ -365,7 +365,7 @@ const doctorsData = [
     status: "approved",
   },
   {
-    firstName: "Dr. Manish",
+    firstName: "Manish",
     lastName: "Tiwari",
     email: "manish.tiwari@example.com",
     phone: "9876543224",

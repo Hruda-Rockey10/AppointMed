@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout";
+import { Modal, Button } from "../../components/common";
 import { adminService } from "../../services/adminService";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../features/alert/alertSlice";
@@ -10,6 +11,8 @@ const Users = () => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterRole, setFilterRole] = useState("all");
+    const [showBlockModal, setShowBlockModal] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
     const dispatch = useDispatch();
 
     const getUsers = async () => {
@@ -56,19 +59,25 @@ const Users = () => {
         setFilteredUsers(filtered);
     }, [searchTerm, filterRole, users]);
 
-    const handleBlockUser = async (user) => {
-        const action = user.isBlocked ? "unblock" : "block";
-        if (!window.confirm(`Are you sure you want to ${action} ${user.name}?`)) {
-            return;
-        }
+    const handleBlockUser = (user) => {
+        setSelectedUser(user);
+        setShowBlockModal(true);
+    };
 
+    const confirmBlockUser = async () => {
+        if (!selectedUser) return;
+        
+        const action = selectedUser.isBlocked ? "unblock" : "block";
+        
         try {
             dispatch(showLoading());
-            const res = await adminService.blockUser(user._id, !user.isBlocked);
+            const res = await adminService.blockUser(selectedUser._id, !selectedUser.isBlocked);
             dispatch(hideLoading());
             if (res.success) {
                 alert(res.message || `User ${action}ed successfully!`);
                 getUsers();
+                setShowBlockModal(false);
+                setSelectedUser(null);
             } else {
                 alert(res.message || `Failed to ${action} user`);
             }
@@ -267,6 +276,39 @@ const Users = () => {
                     ))}
                 </div>
             )}
+            {/* Block Confirmation Modal */}
+            <Modal
+                isOpen={showBlockModal}
+                onClose={() => {
+                    setShowBlockModal(false);
+                    setSelectedUser(null);
+                }}
+                title={selectedUser?.isBlocked ? "Unblock User" : "Block User"}
+                footer={
+                    <div className="flex justify-end gap-3">
+                        <Button
+                            variant="ghost"
+                            onClick={() => {
+                                setShowBlockModal(false);
+                                setSelectedUser(null);
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant={selectedUser?.isBlocked ? "success" : "danger"}
+                            onClick={confirmBlockUser}
+                        >
+                            {selectedUser?.isBlocked ? "Unblock" : "Block"}
+                        </Button>
+                    </div>
+                }
+            >
+                <p className="text-gray-300">
+                    Are you sure you want to {selectedUser?.isBlocked ? "unblock" : "block"} <strong>{selectedUser?.name}</strong>?
+                    {!selectedUser?.isBlocked && " They will no longer be able to log in to the system."}
+                </p>
+            </Modal>
         </Layout>
     );
 };

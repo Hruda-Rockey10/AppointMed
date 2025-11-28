@@ -125,25 +125,42 @@ const doctorAppointmentsController = async (req, res) => {
 
 const updateStatusController = async (req, res) => {
   try {
-    const { appointmentsId, status } = req.body;
+    const { appointmentId, status } = req.body;
+    console.log("Updating appointment status:", { appointmentId, status });
+    
     const appointments = await appointmentModel.findByIdAndUpdate(
-      appointmentsId,
+      appointmentId,
       { status }
     );
+    
+    if (!appointments) {
+        console.log("Appointment not found for update:", appointmentId);
+        return res.status(404).send({
+            success: false,
+            message: "Appointment not found",
+        });
+    }
+
     const user = await userModel.findOne({ _id: appointments.userId });
-    const notification = user.notification;
-    notification.push({
-      type: "status-updated",
-      message: `your appointment has been updated ${status}`,
-      onClickPath: "/doctor-appointments",
-    });
-    await user.save();
+    
+    if (user) {
+        const notification = user.notification || [];
+        notification.push({
+          type: "status-updated",
+          message: `your appointment has been updated ${status}`,
+          onClickPath: "/doctor-appointments",
+        });
+        await user.save();
+    } else {
+        console.log("User not found for notification:", appointments.userId);
+    }
+    
     res.status(200).send({
       success: true,
       message: "Appointment Status Updated",
     });
   } catch (error) {
-    console.log(error);
+    console.log("Error in updateStatusController:", error);
     res.status(500).send({
       success: false,
       error,
