@@ -34,13 +34,23 @@ app.get("/health", (req, res) => {
   });
 });
 
+if (process.env.NODE_ENV === "production") {
+  const clientPath = path.join(__dirname, "../../client/dist");
+  app.use(express.static(clientPath));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(clientPath, "index.html"));
+  });
+}
+
 // Port
 const port = process.env.PORT || 8080;
 
 // Listen
 app.listen(port, () => {
   console.log(
-    `Server Running in ${process.env.NODE_MODE || "development"} Mode on port ${port}`
-      .bgCyan.white
+    `Server Running in ${
+      process.env.NODE_MODE || "development"
+    } Mode on port ${port}`.bgCyan.white
   );
 });
