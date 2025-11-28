@@ -1,110 +1,249 @@
-# AppointMed - Doctor Appointment System
+# 🏥 AppointMed - Healthcare Appointment Management System
 
-A modern, full-stack MERN application for booking doctor appointments, managing profiles, and admin controls.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-16.x-339933?logo=node.js)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4.x-47A248?logo=mongodb)](https://www.mongodb.com/)
+
+A modern, full-stack healthcare appointment management system that seamlessly connects patients with verified doctors. Built with the MERN stack and featuring a stunning dark-mode UI with smooth animations.
+
+## ✨ Features
+
+### 👨‍⚕️ For Patients
+
+- **Find & Book Doctors**: Browse verified doctors by specialization and availability
+- **Appointment Management**: View, track, and manage all your appointments
+- **Apply to Become a Doctor**: Submit applications with credentials and practice information
+- **Profile Management**: Update personal information and health metrics
+- **Real-time Notifications**: Get instant updates on appointment status
+
+### 👩‍⚕️ For Doctors
+
+- **Doctor Dashboard**: Manage your appointments and patient requests
+- **Profile Customization**: Showcase your specialization, education, and experience
+- **Appointment Control**: Accept, reject, or complete patient appointments
+- **Practice Hours**: Set your available consultation times and fees
+
+### 🔐 For Administrators
+
+- **User Management**: View and manage all users in the system
+- **Doctor Verification**: Approve or reject doctor applications
+- **Block/Unblock Users**: Control user access to the platform
+- **System Overview**: Monitor platform statistics and activity
 
 ## 🚀 Tech Stack
 
-- **Frontend:** React 19, Vite 7, Tailwind CSS v4, Redux Toolkit, React Router v6
-- **Backend:** Node.js, Express, MongoDB, Mongoose
-- **Authentication:** JWT, bcryptjs
+### Frontend
 
-## 📂 Project Structure
+- **React 18** - Modern UI library
+- **Redux Toolkit** - State management
+- **React Router** - Client-side routing
+- **Tailwind CSS** - Utility-first styling
+- **Vite** - Next-generation build tool
 
-```
-AppointMed/
-├── client/                 # Frontend application (React + Vite)
-│   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── features/       # Redux slices (state management)
-│   │   ├── hooks/          # Custom hooks
-│   │   ├── pages/          # Application pages
-│   │   ├── services/       # API service layer
-│   │   └── styles/         # Global styles (Tailwind)
-├── server/                 # Backend application (Node + Express)
-│   ├── src/
-│   │   ├── config/         # Database & environment config
-│   │   ├── controllers/    # Request handlers
-│   │   ├── middlewares/    # Auth & error handling
-│   │   ├── models/         # Mongoose models
-│   │   └── routes/         # API routes
-└── README.md               # Project documentation
-```
+### Backend
 
-## 🛠️ Setup & Installation
+- **Node.js** - Runtime environment
+- **Express** - Web framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - ODM library
+- **JWT** - Authentication
+- **Bcrypt** - Password hashing
+
+## 📸 Screenshots
+
+### Login Page
+
+<!-- Add screenshot: ![Login Page](./screenshots/login.png) -->
+
+### Home Dashboard
+
+<!-- Add screenshot: ![Home Dashboard](./screenshots/home.png) -->
+
+### Find Doctors
+
+<!-- Add screenshot: ![Doctors Listing](./screenshots/doctors.png) -->
+
+### Book Appointment
+
+<!-- Add screenshot: ![Booking Page](./screenshots/booking.png) -->
+
+### Admin Dashboard
+
+<!-- Add screenshot: ![Admin Dashboard](./screenshots/admin.png) -->
+
+### Doctor Profile
+
+<!-- Add screenshot: ![Doctor Profile](./screenshots/doctor-profile.png) -->
+
+## 🛠️ Installation & Setup
 
 ### Prerequisites
-- Node.js (v18+)
-- MongoDB (Local or Atlas)
 
-### 1. Clone the repository
+- Node.js (v16 or higher)
+- MongoDB (v4 or higher)
+- npm or yarn
+
+### Clone the Repository
+
 ```bash
-git clone <repository-url>
+git clone https://github.com/Hruda-Rockey10/AppointMed.git
 cd AppointMed
 ```
 
-### 2. Install Dependencies
+### Install Dependencies
 
-**Frontend:**
 ```bash
+# Install root dependencies
+npm install
+
+# Install client dependencies
 cd client
 npm install
-```
 
-**Backend:**
-```bash
-cd server
+# Install server dependencies
+cd ../server
 npm install
 ```
 
-### 3. Environment Variables
+### Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the `server` directory:
 
 ```env
-PORT=8080
-NODE_MODE=development
 MONGO_URL=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
+PORT=8001
 ```
 
-### 4. Run the Application
+### Run the Application
 
-**Frontend:**
+From the root directory:
+
 ```bash
-cd client
+# Run both client and server concurrently
 npm run dev
+
+# Or run separately:
+# Client (runs on port 5173)
+npm run client
+
+# Server (runs on port 8001)
+npm run server
 ```
 
-**Backend:**
-```bash
-cd server
-npm run dev
+The application will be available at:
+
+- **Frontend**: http://localhost:5173
+- **Backend**: http://localhost:8001
+
+## 📁 Project Structure
+
+```
+AppointMed/
+├── client/                 # React frontend
+│   ├── public/
+│   │   └── favicon.png     # App favicon
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   │   ├── common/     # Common components (Modal, Button, etc.)
+│   │   │   └── layout/     # Layout components (Navbar, Footer)
+│   │   ├── features/       # Redux slices
+│   │   ├── pages/          # Page components
+│   │   │   ├── admin/      # Admin pages
+│   │   │   ├── auth/       # Authentication pages
+│   │   │   ├── doctor/     # Doctor pages
+│   │   │   └── user/       # User pages
+│   │   ├── services/       # API service layers
+│   │   ├── store/          # Redux store configuration
+│   │   └── utils/          # Utility functions
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+│
+├── server/                 # Node.js backend
+│   ├── src/
+│   │   ├── config/         # Database configuration
+│   │   ├── controllers/    # Route controllers
+│   │   ├── middlewares/    # Custom middlewares
+│   │   ├── models/         # Mongoose models
+│   │   ├── routes/         # API routes
+│   │   ├── scripts/        # Utility scripts
+│   │   └── server.js       # Server entry point
+│   └── package.json
+│
+├── package.json            # Root package.json
+└── README.md
 ```
 
-## 🎨 Tailwind CSS v4
+## 🔐 User Roles & Permissions
 
-This project uses Tailwind CSS v4.
-- **No CSS Modules:** All styling is done via utility classes.
-- **Global Styles:** Defined in `client/src/styles/index.css`.
-- **Configuration:** `client/tailwind.config.js` and `client/postcss.config.js`.
+### Patient (Default Role)
 
-## 📝 API Endpoints
+- Browse doctors
+- Book appointments
+- Apply to become a doctor
+- Manage profile and health metrics
 
-### Auth
-- `POST /api/v1/user/login` - User login
-- `POST /api/v1/user/register` - User registration
+### Doctor (Approved by Admin)
 
-### User
-- `POST /api/v1/user/getUserData` - Get user profile
-- `POST /api/v1/user/apply-doctor` - Apply for doctor account
-- `POST /api/v1/user/book-appointment` - Book an appointment
+- All patient permissions
+- Manage appointments
+- Update doctor profile
+- Set consultation fees and timings
 
 ### Admin
-- `GET /api/v1/admin/getAllUsers` - Get all users
-- `GET /api/v1/admin/getAllDoctors` - Get all doctors
-- `POST /api/v1/admin/changeAccountStatus` - Approve/Reject doctor
 
-### Doctor
-- `POST /api/v1/doctor/getDoctorInfo` - Get doctor details
-- `POST /api/v1/doctor/updateProfile` - Update doctor profile
-- `GET /api/v1/doctor/doctor-appointments` - Get appointments
+- All system permissions
+- Manage users and doctors
+- Approve/reject doctor applications
+- Block/unblock users
+
+## 🎨 Design Features
+
+- **Modern Dark Theme**: Sleek, professional dark-mode UI
+- **Gradient Accents**: Blue and teal gradients for visual appeal
+- **Smooth Animations**: Micro-interactions for enhanced UX
+- **Responsive Design**: Fully responsive across all devices
+- **Glassmorphism Effects**: Modern glass-like UI elements
+- **Custom Modal Components**: Replaced native alerts with custom modals
+
+## 🔒 Security Features
+
+- **JWT Authentication**: Secure token-based auth
+- **Password Hashing**: Bcrypt for secure password storage
+- **Protected Routes**: Client and server-side route protection
+- **User Blocking**: Admin can block/unblock users
+- **Session Management**: Blocked users are logged out automatically
+
+## 🤝 Contributing
+
+Contributions are always welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Developer
+
+**Hrudananda Behera**
+
+- LinkedIn: [hruda10](https://www.linkedin.com/in/hruda10/)
+- GitHub: [Hruda-Rockey10](https://github.com/Hruda-Rockey10)
+- Email: hruda.iit.work@gmail.com
+
+## 🙏 Acknowledgments
+
+- Icons from [React Icons](https://react-icons.github.io/react-icons/)
+- UI inspiration from modern healthcare platforms
+- Built with ❤️ using the MERN stack
+
+---
+
+<p align="center">Made with ❤️ by Hrudananda Behera</p>
