@@ -7,6 +7,18 @@
 
 A modern, full-stack healthcare appointment management system that seamlessly connects patients with verified doctors. Built with the MERN stack and featuring a stunning dark-mode UI with smooth animations.
 
+---
+
+<div align="center">
+
+## 🌐 [**Live Demo →**](https://hruda-appointmed.vercel.app/)
+
+**Experience the full application live on Vercel!**
+
+</div>
+
+---
+
 ## ✨ Features
 
 ### 👨‍⚕️ For Patients
@@ -113,7 +125,7 @@ Create a `.env` file in the `server` directory:
 ```env
 MONGO_URL=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-PORT=8001
+PORT=8080
 ```
 
 ### Run the Application
@@ -128,15 +140,14 @@ npm run dev
 # Client (runs on port 5173)
 npm run client
 
-# Server (runs on port 8001)
+# Server (runs on port 8080)
 npm run server
 ```
 
 The application will be available at:
 
-- **Live Demo**: https://hruda-appointmed.vercel.app/
 - **Frontend**: http://localhost:5173 (Local)
-- **Backend**: http://localhost:8001 (Local)
+- **Backend**: http://localhost:8080 (Local)
 
 ## 📁 Project Structure
 
