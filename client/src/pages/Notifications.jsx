@@ -26,7 +26,6 @@ const Notifications = () => {
       }
     } catch (error) {
       dispatch(hideLoading());
-      console.error("Error fetching notifications:", error);
     }
   };
 
@@ -45,7 +44,6 @@ const Notifications = () => {
     } catch (error) {
       dispatch(hideLoading());
       alert("Error marking notifications as read");
-      console.error("Error:", error);
     }
   };
 
@@ -69,7 +67,6 @@ const Notifications = () => {
       }
     } catch (error) {
       dispatch(hideLoading());
-      console.error("Error deleting notifications:", error);
       alert("Something went wrong");
     }
   };

@@ -100,8 +100,12 @@ const Navbar = () => {
             to="/" 
             className="group inline-flex items-center gap-3 rounded-2xl bg-gradient-to-br from-blue-950/60 to-blue-900/40 px-3 py-2 pr-6 shadow-lg ring-1 ring-blue-400/20 transition-all hover:shadow-blue-500/30 hover:ring-blue-400/40"
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/50">
-              <FaHeart className="text-lg animate-pulse" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl overflow-hidden">
+              <img 
+                src="/favicon.png" 
+                alt="AppointMed Logo" 
+                className="h-full w-full object-contain"
+              />
             </div>
             <div className="leading-tight">
               <p className="text-xs font-bold uppercase tracking-widest text-blue-400">AppointMed</p>

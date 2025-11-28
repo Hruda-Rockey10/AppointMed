@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin, FaEnvelope, FaHeart } from 'react-icons/fa';
-import { SiReact, SiNodedotjs, SiMongodb, SiExpress, SiTailwindcss } from 'react-icons/si';
+import { SiReact, SiNodedotjs, SiMongodb, SiExpress, SiTailwindcss, SiRedux } from 'react-icons/si';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -9,19 +9,19 @@ const Footer = () => {
   const socialLinks = [
     {
       name: 'LinkedIn',
-      url: 'https://linkedin.com/in/hrudananda-behera',
+      url: 'https://www.linkedin.com/in/hruda10/',
       icon: FaLinkedin,
       color: 'hover:text-blue-400'
     },
     {
       name: 'GitHub',
-      url: 'https://github.com/Hruda-Rockey10',
+      url: 'https://github.com/Hruda-Rockey10/AppointMed',
       icon: FaGithub,
       color: 'hover:text-gray-300'
     },
     {
       name: 'Email',
-      url: 'mailto:hrudanandabehera@gmail.com',
+      url: 'mailto:hruda.iit.work@gmail.com',
       icon: FaEnvelope,
       color: 'hover:text-cyan-400'
     }
@@ -29,6 +29,7 @@ const Footer = () => {
 
   const techStack = [
     { name: 'React', icon: SiReact, color: 'text-cyan-400' },
+    { name: 'Redux', icon: SiRedux, color: 'text-purple-400' },
     { name: 'Node.js', icon: SiNodedotjs, color: 'text-green-400' },
     { name: 'Express', icon: SiExpress, color: 'text-gray-300' },
     { name: 'MongoDB', icon: SiMongodb, color: 'text-green-400' },
@@ -48,8 +49,12 @@ const Footer = () => {
             {/* Brand Section */}
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/50">
-                  <FaHeart className="text-xl text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl overflow-hidden">
+                  <img 
+                    src="/favicon.png" 
+                    alt="AppointMed Logo" 
+                    className="h-full w-full object-contain"
+                  />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white">AppointMed</h3>

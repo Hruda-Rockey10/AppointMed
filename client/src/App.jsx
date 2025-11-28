@@ -14,7 +14,7 @@ import BookingPage from './pages/user/BookingPage';
 import Appointments from './pages/user/Appointments';
 import ApplyDoctor from './pages/user/ApplyDoctor';
 import UserProfile from './pages/UserProfile';
-import NotificationPage from './pages/NotificationPage';
+
 import Notifications from './pages/Notifications';
 
 // Doctor Pages

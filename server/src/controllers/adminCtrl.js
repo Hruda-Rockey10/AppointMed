@@ -4,7 +4,7 @@ const userModel = require("../models/userModels");
 const getAllUsersController = async (req, res) => {
   try {
     const users = await userModel.find({});
-    console.log(`Fetched ${users.length} users`); // Debug log
+
     res.status(200).send({
       success: true,
       message: "users data list",
@@ -23,7 +23,7 @@ const getAllUsersController = async (req, res) => {
 const getAllDoctorsController = async (req, res) => {
   try {
     const doctors = await doctorModel.find({});
-    console.log(`Fetched ${doctors.length} doctors`); // Debug log
+
     res.status(200).send({
       success: true,
       message: "Doctors Data list",
@@ -43,12 +43,12 @@ const getAllDoctorsController = async (req, res) => {
 const changeAccountStatusController = async (req, res) => {
   try {
     const { doctorId, status } = req.body;
-    console.log("📋 Received request - Doctor ID:", doctorId, "Status:", status);
+
     
     const doctor = await doctorModel.findByIdAndUpdate(doctorId, { status });
     const user = await userModel.findOne({ _id: doctor.userId });
     
-    console.log("👤 User found:", user.name, "Current isDoctor:", user.isDoctor);
+
     
     const notification = user.notification;
     notification.push({
@@ -59,10 +59,10 @@ const changeAccountStatusController = async (req, res) => {
     
     // Set isDoctor based on status
     user.isDoctor = status === "approved" ? true : false;
-    console.log("✅ Setting isDoctor to:", user.isDoctor);
+
     
     await user.save();
-    console.log("💾 User saved successfully");
+
     
     res.status(201).send({
       success: true,

@@ -20,7 +20,7 @@ const Users = () => {
             dispatch(showLoading());
             const res = await adminService.getAllUsers();
             dispatch(hideLoading());
-            console.log("Users response:", res); // Debug log
+
             if (res.success) {
                 setUsers(res.data);
                 setFilteredUsers(res.data);

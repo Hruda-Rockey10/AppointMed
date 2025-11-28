@@ -183,8 +183,8 @@ const deleteAllNotificationController = async (req, res) => {
     }
 
     updatedUser.password = undefined;
-    console.log("Deleted all notifications for user:", req.userId);
-    console.log("Seen count after delete:", updatedUser.seenNotification.length);
+
+
     res.status(200).send({
       success: true,
       message: "Notifications Deleted successfully",
@@ -233,17 +233,12 @@ const bookeAppointmnetController = async (req, res) => {
       doctorId: req.body.doctorId.toString(),
     };
     
-    console.log("Creating appointment with data:", {
-      userId: appointmentData.userId,
-      doctorId: appointmentData.doctorId,
-      date: appointmentData.date,
-      time: appointmentData.time
-    });
+
     
     const newAppointment = new appointmentModel(appointmentData);
     await newAppointment.save();
     
-    console.log("Appointment saved successfully with ID:", newAppointment._id);
+
     
     // Try to send notification to doctor (optional - don't fail booking if doctor user not found)
     try {
@@ -323,17 +318,17 @@ const bookingAvailabilityController = async (req, res) => {
 //user appointments controller
 const userAppointmentsController = async (req, res) => {
   try {
-    console.log("Fetching appointments for userId:", req.userId);
+
     
     // userId is stored as String in appointmentModel
     const userIdStr = req.userId.toString();
-    console.log("Querying with userId string:", userIdStr);
+
     
     const appointments = await appointmentModel.find({
       userId: userIdStr,
     });
     
-    console.log("Found user appointments:", appointments.length);
+
     
     res.status(200).send({
       success: true,
@@ -391,7 +386,7 @@ const updateUserProfileController = async (req, res) => {
     }
 
     updatedUser.password = undefined;
-    console.log("Updated user profile for:", req.userId);
+
     
     res.status(200).send({
       success: true,
