@@ -21,6 +21,11 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
+app.use((req, res, next) => {
+  console.log(`[DEBUG] Request: ${req.method} ${req.url}`);
+  next();
+});
+
 // Routes
 app.use("/api/v1/user", require("./routes/userRoutes"));
 app.use("/api/v1/admin", require("./routes/adminRoutes"));
@@ -36,6 +41,25 @@ app.get("/health", (req, res) => {
 
 if (process.env.NODE_ENV === "production") {
   const clientPath = path.join(__dirname, "../../client/dist");
+  console.log("Client Path:", clientPath);
+  
+  try {
+    const fs = require('fs');
+    if (fs.existsSync(clientPath)) {
+      console.log("Client dist contents:", fs.readdirSync(clientPath));
+      const assetsPath = path.join(clientPath, 'assets');
+      if (fs.existsSync(assetsPath)) {
+         console.log("Client assets contents:", fs.readdirSync(assetsPath));
+      } else {
+         console.log("Assets directory not found at:", assetsPath);
+      }
+    } else {
+      console.log("Client dist directory not found at:", clientPath);
+    }
+  } catch (err) {
+    console.error("Error checking client files:", err);
+  }
+
   app.use(express.static(clientPath));
 
   app.get("*", (req, res) => {
