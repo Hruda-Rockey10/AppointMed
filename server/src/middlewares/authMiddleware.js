@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
         });
       } else {
         req.userId = decode.id;
-        
+
         // Check if user is blocked
         try {
           const userModel = require("../models/userModels");
@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
               success: false,
             });
           }
-          next();
+          next(); // Move to the next middleware or route handler i.e authController
         } catch (error) {
           console.log(error);
           return res.status(401).send({

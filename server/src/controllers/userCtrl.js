@@ -87,7 +87,11 @@ const authController = async (req, res) => {
 // APpply DOctor CTRL
 const applyDoctorController = async (req, res) => {
   try {
-    const newDoctor = new doctorModel({ ...req.body, status: "pending", userId: req.userId });
+    const newDoctor = new doctorModel({
+      ...req.body,
+      status: "pending",
+      userId: req.userId,
+    });
     await newDoctor.save();
     const adminUser = await userModel.findOne({ isAdmin: true });
     const notification = adminUser.notification;
@@ -128,15 +132,15 @@ const getAllNotificationController = async (req, res) => {
     }
 
     const notifications = user.notification || [];
-    
+
     // If no new notifications, just return the user
     if (notifications.length === 0) {
-        user.password = undefined;
-        return res.status(200).send({
-            success: true,
-            message: "No new notifications",
-            data: user,
-        });
+      user.password = undefined;
+      return res.status(200).send({
+        success: true,
+        message: "No new notifications",
+        data: user,
+      });
     }
 
     // Move notifications to seenNotification and clear notification array
@@ -144,13 +148,13 @@ const getAllNotificationController = async (req, res) => {
       req.userId,
       {
         $push: { seenNotification: { $each: notifications } },
-        $set: { notification: [] }
+        $set: { notification: [] },
       },
       { new: true }
     );
-    
+
     updatedUser.password = undefined;
-    
+
     res.status(200).send({
       success: true,
       message: "all notification marked as read",
@@ -170,20 +174,19 @@ const getAllNotificationController = async (req, res) => {
 const deleteAllNotificationController = async (req, res) => {
   try {
     const updatedUser = await userModel.findByIdAndUpdate(
-        req.userId,
-        { $set: { notification: [], seenNotification: [] } },
-        { new: true }
+      req.userId,
+      { $set: { notification: [], seenNotification: [] } },
+      { new: true }
     );
 
     if (!updatedUser) {
-        return res.status(404).send({
-            message: "User not found",
-            success: false,
-        });
+      return res.status(404).send({
+        message: "User not found",
+        success: false,
+      });
     }
 
     updatedUser.password = undefined;
-
 
     res.status(200).send({
       success: true,
@@ -206,7 +209,7 @@ const getAllDocotrsController = async (req, res) => {
     const doctors = await doctorModel.find({ status: "approved" });
     res.status(200).send({
       success: true,
-      message: "Docots Lists Fetched Successfully",
+      message: "Doctors Lists Fetched Successfully",
       data: doctors,
     });
   } catch (error) {
@@ -225,29 +228,29 @@ const bookeAppointmnetController = async (req, res) => {
     req.body.date = moment(req.body.date, "YYYY-MM-DD").format("DD-MM-YYYY");
     req.body.time = moment(req.body.time, "HH:mm").format("HH:mm");
     req.body.status = "pending";
-    
+
     // Ensure IDs are strings to match appointmentModel schema
     const appointmentData = {
       ...req.body,
       userId: req.userId.toString(),
       doctorId: req.body.doctorId.toString(),
     };
-    
 
-    
     const newAppointment = new appointmentModel(appointmentData);
     await newAppointment.save();
-    
 
-    
     // Try to send notification to doctor (optional - don't fail booking if doctor user not found)
     try {
       const doctorUserId = req.body.doctorUserId || req.body.doctorInfo.userId;
       if (doctorUserId) {
         const doctorUser = await userModel.findOne({ _id: doctorUserId });
         if (doctorUser) {
-          const userName = req.body.userInfo.name || `${req.body.userInfo.firstName || ''} ${req.body.userInfo.lastName || ''}`.trim();
-          
+          const userName =
+            req.body.userInfo.name ||
+            `${req.body.userInfo.firstName || ""} ${
+              req.body.userInfo.lastName || ""
+            }`.trim();
+
           doctorUser.notification.push({
             type: "New-appointment-request",
             message: `A New Appointment Request from ${userName}`,
@@ -261,9 +264,12 @@ const bookeAppointmnetController = async (req, res) => {
         console.warn("No doctor userId provided for notification");
       }
     } catch (notificationError) {
-      console.error("Error sending notification (non-fatal):", notificationError);
+      console.error(
+        "Error sending notification (non-fatal):",
+        notificationError
+      );
     }
-    
+
     res.status(200).send({
       success: true,
       message: "Appointment booked successfully",
@@ -285,11 +291,13 @@ const bookingAvailabilityController = async (req, res) => {
     const fromTime = moment(req.body.time, "HH:mm")
       .subtract(1, "hours")
       .format("HH:mm");
-    const toTime = moment(req.body.time, "HH:mm").add(1, "hours").format("HH:mm");
+    const toTime = moment(req.body.time, "HH:mm")
+      .add(1, "hours")
+      .format("HH:mm");
     const doctorId = req.body.doctorId;
     const appointments = await appointmentModel.find({
       doctorId,
-      date,
+      date, //  checking for overlapping dates
       time: {
         $gte: fromTime,
         $lte: toTime,
@@ -318,18 +326,13 @@ const bookingAvailabilityController = async (req, res) => {
 //user appointments controller
 const userAppointmentsController = async (req, res) => {
   try {
-
-    
     // userId is stored as String in appointmentModel
     const userIdStr = req.userId.toString();
 
-    
     const appointments = await appointmentModel.find({
       userId: userIdStr,
     });
-    
 
-    
     res.status(200).send({
       success: true,
       message: "Users Appointments Fetch Successfully",
@@ -356,14 +359,13 @@ module.exports = {
   bookeAppointmnetController,
   bookingAvailabilityController,
   userAppointmentsController,
-
 };
 
 // Update user profile
 const updateUserProfileController = async (req, res) => {
   try {
     const { height, weight, bloodGroup, age, phone } = req.body;
-    
+
     const updatedUser = await userModel.findByIdAndUpdate(
       req.userId,
       {
@@ -387,7 +389,6 @@ const updateUserProfileController = async (req, res) => {
 
     updatedUser.password = undefined;
 
-    
     res.status(200).send({
       success: true,
       message: "Profile updated successfully",

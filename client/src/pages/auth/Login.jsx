@@ -4,7 +4,13 @@ import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../features/alert/alertSlice";
 import { authService } from "../../services/authService";
 import { setUser } from "../../features/user/userSlice";
-import { FaCheckCircle, FaEye, FaEyeSlash, FaLock, FaEnvelope } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaEye,
+  FaEyeSlash,
+  FaLock,
+  FaEnvelope,
+} from "react-icons/fa";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -22,13 +28,24 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // stops the browser from refreshing the entire page
     try {
       dispatch(showLoading());
       const res = await authService.login(formData);
       dispatch(hideLoading());
       if (res.success) {
         dispatch(setUser(res.data));
+        /*
+         * Login Process Explanation:
+         * 1. Login Page: Receives only the token.
+         * 2. State Update: It tries to save user data, but since there is no user data yet,
+         *    your Redux state (user) remains empty/null.
+         * 3. Navigation: You are redirected to the Home page (/).
+         * 4. Protected Route: The ProtectedRoute component notices that user is null.
+         * 5. Fetch Data: It automatically triggers the getUser() function.
+         * 6. Second Request: This function calls a different endpoint (/getUserData),
+         *    which does return the full user object.
+         */
         navigate("/");
       } else {
         setError(res.message || "Login failed");
@@ -42,13 +59,16 @@ const Login = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-[#0a0f1a] px-4 py-12">
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: `
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
           linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
           linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
         `,
-        backgroundSize: '80px 80px'
-      }}>
+          backgroundSize: "80px 80px",
+        }}
+      >
         <div className="absolute -top-20 -right-20 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl animate-pulse" />
         <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-cyan-400/15 blur-3xl" />
       </div>
@@ -65,41 +85,50 @@ const Login = () => {
               Smarter scheduling for doctors, patients & administrators.
             </h1>
             <p className="text-white/90 text-lg">
-              Manage appointments, review diagnostics, and stay connected with your care team using a single, unified experience.
+              Manage appointments, review diagnostics, and stay connected with
+              your care team using a single, unified experience.
             </p>
             <ul className="space-y-4 text-sm">
-              {["Secure role-based access", "Real-time appointment tracking", "Modern dashboards with live alerts"].map(
-                (item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <FaCheckCircle className="mt-0.5 text-green-400 shrink-0" />
-                    <span className="text-white/90">{item}</span>
-                  </li>
-                )
-              )}
+              {[
+                "Secure role-based access",
+                "Real-time appointment tracking",
+                "Modern dashboards with live alerts",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <FaCheckCircle className="mt-0.5 text-green-400 shrink-0" />
+                  <span className="text-white/90">{item}</span>
+                </li>
+              ))}
             </ul>
             <div className="grid gap-4 sm:grid-cols-3">
-              {["2K+ daily visits", "99.9% uptime", "24/7 support"].map((stat) => (
-                <div
-                  key={stat}
-                  className="rounded-xl bg-white/10 backdrop-blur px-4 py-3 text-center text-sm font-semibold"
-                >
-                  {stat}
-                </div>
-              ))}
+              {["2K+ daily visits", "99.9% uptime", "24/7 support"].map(
+                (stat) => (
+                  <div
+                    key={stat}
+                    className="rounded-xl bg-white/10 backdrop-blur px-4 py-3 text-center text-sm font-semibold"
+                  >
+                    {stat}
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>
 
         <div className="relative w-full max-w-xl lg:flex-1">
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 blur-2xl" />
-          
+
           <div className="relative rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-950/40 via-slate-900/60 to-blue-950/40 p-10 shadow-2xl backdrop-blur-xl">
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-400/5 to-transparent" />
-            
+
             <div className="relative">
               <div className="mb-8 space-y-2 text-center">
-                <p className="text-xs font-bold uppercase tracking-widest text-amber-500">Welcome back</p>
-                <h2 className="font-display text-3xl font-bold text-gray-100">Sign in to AppointMed</h2>
+                <p className="text-xs font-bold uppercase tracking-widest text-amber-500">
+                  Welcome back
+                </p>
+                <h2 className="font-display text-3xl font-bold text-gray-100">
+                  Sign in to AppointMed
+                </h2>
                 <p className="text-sm text-gray-400">
                   Enter your credentials to continue to your dashboard.
                 </p>
@@ -113,7 +142,9 @@ const Login = () => {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2.5">
-                  <label className="text-sm font-semibold text-gray-300">Email address</label>
+                  <label className="text-sm font-semibold text-gray-300">
+                    Email address
+                  </label>
                   <div className="relative">
                     <FaEnvelope className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400" />
                     <input
@@ -129,7 +160,9 @@ const Login = () => {
                 </div>
 
                 <div className="space-y-2.5">
-                  <label className="text-sm font-semibold text-gray-300">Password</label>
+                  <label className="text-sm font-semibold text-gray-300">
+                    Password
+                  </label>
                   <div className="relative">
                     <FaLock className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400" />
                     <input
@@ -158,7 +191,10 @@ const Login = () => {
 
               <p className="mt-8 text-center text-sm text-gray-400">
                 Don&apos;t have an account?{" "}
-                <Link to="/register" className="font-semibold text-amber-500 hover:text-amber-600 transition-colors">
+                <Link
+                  to="/register"
+                  className="font-semibold text-amber-500 hover:text-amber-600 transition-colors"
+                >
                   Create one now
                 </Link>
               </p>
