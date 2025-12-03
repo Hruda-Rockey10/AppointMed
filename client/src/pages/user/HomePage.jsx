@@ -235,7 +235,7 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {doctors.slice(0, 3).map((doctor) => (
+              {doctors.slice(0, 3).map((doctor) => ( //It returns exactly 3 doctors
                 <DoctorList key={doctor._id} doctor={doctor} />
               ))}
             </div>
@@ -247,3 +247,15 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+/*  
+1. Passed as a Prop 
+<DoctorList doctor={doctor} />
+
+2. Passed as Children
+<DoctorList>
+  <p>Children</p>
+</DoctorList>
+  Children" refers specifically to what you put between the opening and closing tags.
+*/

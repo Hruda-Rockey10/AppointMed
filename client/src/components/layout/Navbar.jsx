@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import {
   FaHeart,
   FaBars,
@@ -19,15 +19,18 @@ import {
 import { cn } from '../../utils/cn';
 
 const Navbar = () => {
-  const location = useLocation();
+  const location = useLocation();  // This hook comes from react-router-dom and gives you the current URL.
   const { user } = useSelector((state) => state.user);
 
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const unreadNotifications = user?.notification?.length ?? 0;
-
+  const unreadNotifications = user?.notification?.length ?? 0; // ?. Only try to access the next thing if the current thing actually exists."   
+     
+  
+  
+  // If the user stays the same, it instantly gives back the cached list, saving a tiny bit of processing power.
   const navLinks = useMemo(() => {
     if (user?.isAdmin) {
       return [
@@ -60,11 +63,11 @@ const Navbar = () => {
 
   const renderNavLinks = (isMobile = false) =>
     navLinks.map(({ to, label, icon: Icon }) => {
-      const isActive = location.pathname === to;
+      const isActive = location.pathname === to; // to check if the current page is the same as the link
       return (
         <Link
-          key={to}
-          to={to}
+          key={to} // React needs a unique ID for each item to keep track of them efficiently.
+          to={to} // for navigation
           onClick={() => isMobile && setIsMobileMenuOpen(false)}
           className={cn(
             'group inline-flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200',
@@ -156,7 +159,7 @@ const Navbar = () => {
                   </div>
                   {user?.notification?.length > 0 ? (
                     <ul className="max-h-80 space-y-2 overflow-y-auto">
-                      {user.notification.map((notif, index) => (
+                      {user.notification.map((notif, index) => ( // check login page how user has notification data
                         <li
                           key={index}
                           className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-3 text-sm text-gray-300 transition hover:bg-blue-500/10"

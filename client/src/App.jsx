@@ -31,7 +31,8 @@ function App() {
 
   return (
     <>
-      {loading && <Loading />}
+      {loading && <Loading />} 
+      {/* conditional rendering  if true renders right component or skip*/}
       <Routes>
         {/* Public Routes */}
         <Route
@@ -64,7 +65,7 @@ function App() {
           path="/doctors"
           element={
             <ProtectedRoute>
-              <FindDoctors />
+              <FindDoctors /> {/*import FindDoctors from './pages/user/Doctors';*/}
             </ProtectedRoute>
           }
         />

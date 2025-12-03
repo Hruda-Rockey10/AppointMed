@@ -8,6 +8,7 @@ const DoctorList = ({ doctor }) => {
   return (
     <article
       onClick={() => navigate(`/book-appointment/${doctor._id}`)}
+       //anything inside ${...} is treated as JavaScript code, not text
       className="group relative cursor-pointer overflow-hidden rounded-2xl"
     >
       {/* Glow effect behind card */}

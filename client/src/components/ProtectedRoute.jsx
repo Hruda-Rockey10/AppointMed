@@ -31,6 +31,8 @@ export default function ProtectedRoute({ children }) {
       getUser();
     }
   }, [user]);
+  /* The Problem: When you refresh the page, Redux state is wiped clean. state.user becomes null, even if you have a token in localStorage.
+The Solution: The useEffect hook runs automatically when the component loads.*/
 
   if (localStorage.getItem('token')) {
     return children;

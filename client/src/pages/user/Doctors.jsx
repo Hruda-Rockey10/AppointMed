@@ -143,3 +143,8 @@ const Doctors = () => {
 };
 
 export default Doctors;
+
+//Page loads → useEffect runs → Fetches all doctors from API
+//User types "John" → search state updates → filteredDoctors recalculates → Shows only doctors with "John" in name
+//User clicks "Cardiologist" → selectedSpecialty updates to "Cardiologist" → filteredDoctors recalculates → Shows only cardiologists named "John"
+//User clicks "All specialties" → selectedSpecialty updates to "all" → Shows all doctors named "John" (any specialty)

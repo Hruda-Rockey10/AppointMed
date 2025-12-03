@@ -16,6 +16,7 @@ const appointmentSchema = new mongoose.Schema(
     },
     userInfo: {
       type: mongoose.Schema.Types.Mixed,
+      // This tells Mongoose: "I don't care what structure this data has, just save it."
       required: true,
     },
     date: {
